@@ -36,14 +36,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities;
-        if (user.getRole().getName().name().equals("ADMIN")) {
-            authorities = List.of(
-                    new SimpleGrantedAuthority(user.getRole().getName().name()),
-                    new SimpleGrantedAuthority("USER"));
-        } else {
-            authorities = List.of(new SimpleGrantedAuthority(user.getRole().getName().name()));
-        }
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().getName().name()));
 
         return new UserDetailsImpl(
                 user.getId(),
