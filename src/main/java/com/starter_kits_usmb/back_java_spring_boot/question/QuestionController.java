@@ -30,7 +30,7 @@ public class QuestionController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get an exemple by id")
+    @Operation(summary = "Get an question by id")
     public Question createQuestion(@Valid @RequestBody QuestionCreateDTO questionTDO) {
         Question question = new Question();
         question.setContent(questionTDO.getContent());
@@ -50,6 +50,6 @@ public class QuestionController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete a question")
-    public void deleteExampelById(@PathVariable long id) { questionRepository.deleteById(id);}
+    public void deleteQuestionById(@PathVariable long id) { questionRepository.deleteById(id);}
 
 }
