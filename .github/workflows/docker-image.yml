@@ -1,0 +1,41 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt' # See 'Supported distributions' for available options
+        java-version: '17'
+
+    - name: Maven Build & Sonar analysis
+      #        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      run: mvn -B verify --file pom.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    - name: Build Docker image
+      run: docker build -t API .
+
+    - name: Push to GitHub Packages
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: Nuit-de-l-info-USMB-2023/API/master
+        tags: latest
