@@ -32,3 +32,4 @@ jobs:
         with:
           push: true
           tags: ghcr.io/nuit-de-l-info-usmb-2023/api:latest
+
