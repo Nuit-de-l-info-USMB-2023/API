@@ -1,5 +1,7 @@
 package com.starter_kits_usmb.back_java_spring_boot.question;
 
+import com.starter_kits_usmb.back_java_spring_boot.category.Category;
+import com.starter_kits_usmb.back_java_spring_boot.category.CategoryRepository;
 import com.starter_kits_usmb.back_java_spring_boot.question.dto.QuestionCreateDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -7,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +20,7 @@ import java.util.Optional;
 @Tag(name = "Question controller", description = "Endpoints for managing question")
 public class QuestionController {
     private final QuestionRepository questionRepository;
+    private final CategoryRepository categoryRepository;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -34,6 +38,8 @@ public class QuestionController {
     public Question createQuestion(@Valid @RequestBody QuestionCreateDTO questionTDO) {
         Question question = new Question();
         question.setContent(questionTDO.getContent());
+        Category category = categoryRepository.findById(questionTDO.getCategory()).orElseThrow();
+        question.setCategory(category);
         return questionRepository.save(question);
     }
 
