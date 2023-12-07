@@ -32,3 +32,11 @@ jobs:
         with:
           push: true
           tags: ghcr.io/nuit-de-l-info-usmb-2023/api:latest
+      
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} -o LocalCommand='docker pull ghcr.io/nuit-de-l-info-usmb-2023/api:latest && docker-compose up -d'
