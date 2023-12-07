@@ -28,7 +28,7 @@ public class QuestionController {
     @Operation(summary = "Get question by id")
     public Optional<Question> getQuestionById(@PathVariable long id) { return questionRepository.findById(id); }
 
-    @GetMapping
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get an question by id")
     public Question createQuestion(@Valid @RequestBody QuestionCreateDTO questionTDO) {

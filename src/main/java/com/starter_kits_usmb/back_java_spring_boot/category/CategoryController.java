@@ -28,7 +28,7 @@ public class CategoryController {
     @Operation(summary = "Get category by id")
     public Optional<Category> getCategoryById(@PathVariable long id) { return categoryRepository.findById(id); }
 
-    @GetMapping
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get an category by id")
     public Category createCategory(@Valid @RequestBody CategoryCreateDTO categoryTDO) {
