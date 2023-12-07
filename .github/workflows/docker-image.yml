@@ -37,5 +37,5 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
-        repository: Nuit-de-l-info-USMB-2023/API/master
+        repository: nuit-de-l-info-usmb-2023/api/master
         tags: latest
