@@ -29,8 +29,7 @@ alter table categories owner to user;
 create table questions
 (
     id bigserial primary key,
-    question varchar(100) not null,
-    answer varchar(100) not null,
+    content varchar(100) not null,
     category_id bigint not null references categories(id)
 );
 
@@ -39,7 +38,9 @@ alter table questions owner to user;
 create table answers
 (
     id bigserial primary key,
-    answer varchar(100) not null,
+    content varchar(100) not null,
+    contentAnswer varchar(300) not null,
+    isGoodAnswer boolean not null,
     question_id bigint not null references questions(id)
 );
 
