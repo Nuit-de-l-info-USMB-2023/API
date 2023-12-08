@@ -5,7 +5,7 @@ create table roles
     id bigserial primary key,
     name varchar(10) not null
 );
-alter table roles owner to postgres;
+alter table roles owner to user;
 
 insert into roles(id, name) values (1, 'USER'), (2, 'ADMIN');
 
@@ -16,7 +16,7 @@ create table users
     username varchar(20) not null unique,
     role_id bigint not null references roles(id)
 );
-alter table users owner to postgres;
+alter table users owner to user;
 
 create table categories
 (
@@ -24,7 +24,7 @@ create table categories
     name varchar(20) not null unique
 );
 
-alter table categories owner to postgres;
+alter table categories owner to user;
 
 create table questions
 (
@@ -34,7 +34,7 @@ create table questions
     category_id bigint not null references categories(id)
 );
 
-alter table questions owner to postgres;
+alter table questions owner to user;
 
 create table answers
 (
@@ -43,4 +43,4 @@ create table answers
     question_id bigint not null references questions(id)
 );
 
-alter table answers owner to postgres;
+alter table answers owner to user;
