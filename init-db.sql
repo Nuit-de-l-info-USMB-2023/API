@@ -1,4 +1,4 @@
-\c test
+\c api
 
 create table roles
 (
