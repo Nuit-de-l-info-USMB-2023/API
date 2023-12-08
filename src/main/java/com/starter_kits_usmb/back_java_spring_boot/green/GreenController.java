@@ -1,30 +1,41 @@
 package com.starter_kits_usmb.back_java_spring_boot.green;
 
 
+import com.starter_kits_usmb.back_java_spring_boot.green.dao.GreenDAO;
 import com.starter_kits_usmb.back_java_spring_boot.green.dto.GreenCreateDTO;
 import io.jsonwebtoken.Jwt;
+import com.starter_kits_usmb.back_java_spring_boot.category.Category;
+import com.starter_kits_usmb.back_java_spring_boot.category.CategoryRepository;
+import com.starter_kits_usmb.back_java_spring_boot.user.User;
+import com.starter_kits_usmb.back_java_spring_boot.user.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.security.Principal;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/green")
 @RequiredArgsConstructor
-@Tag(name = "Green Management", description = "Endpoints for managing the posts from the users")
+@Tag(name = "Green Management", description = "Endpoints for managing the greens from the users")
 public class GreenController {
     private final GreenRepository greenRepository;
+    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+
 
     Logger logger = LogManager.getLogger();
 
@@ -33,47 +44,54 @@ public class GreenController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all the posts")
-    public List<Green> getAllPosts() {
+    @Operation(summary = "Get all the greens")
+    public List<GreenDAO> getAllPosts() {
         logger.debug("Getting the list of greens");
         List<Green> greens = greenRepository.findAll();
-//        greens.forEach((green -> {
-//            try {
-//                InputStream inStream = new FileInputStream(new File(imagesFolder + "/" + green.getImage()));
-//                byte[] image = inStream.readAllBytes();
-//                green.setImage(Arrays.toString(image));
-//                inStream.close();
-//
-//            } catch (IOException e) {
-//                logger.error("Error while retreive image " + green.getImage());
-//            }
-//        }));
+        ArrayList<GreenDAO> greensDAO = new ArrayList<>();
+        greens.forEach((green -> {
+            try {
+                GreenDAO dao = GreenDAO.fromGreen(green);
+                InputStream inStream = new FileInputStream(new File(imagesFolder + "/" + green.getImage()));
+                byte[] image = inStream.readAllBytes();
+                dao.setImage(image);
+                inStream.close();
+                greensDAO.add(dao);
+            } catch (IOException e) {
+                logger.error("Error while retreive image " + green.getImage());
+            }
+        }));
         logger.debug("Found " + greens.size() + " greens");
-        return greens;
+        return greensDAO;
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get a post with id")
+    @Operation(summary = "Get a green with id")
     public Optional<Green> getPostById(@PathVariable long id) {
         return greenRepository.findById(id);
     }
 
     @PostMapping(consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a new post")
-    public Green createPost(@ModelAttribute GreenCreateDTO postDTO) {
+    @Operation(summary = "Create a new green")
+    public Green createPost(@ModelAttribute GreenCreateDTO greenDTO, Principal principal) {
         Green green = new Green();
         green.setDate(Date.from(Instant.now()));
-        green.setDescription(postDTO.getDescription());
+        green.setDescription(greenDTO.getDescription());
+        Category category = categoryRepository.findById(greenDTO.getCategory()).orElseThrow();
+        green.setCategory(category);
+
+        User user = userRepository.findByUsername(principal.getName()).orElseThrow();
+        green.setUser(user);
 
         InputStream inStream = null;
         OutputStream outStream = null;
-        MultipartFile image = postDTO.getImage();
+        MultipartFile image = greenDTO.getImage();
         String imageName = "post_" + green.getId() + "_" + image.getOriginalFilename();
         File imageFile = new File(imagesFolder + "/" + imageName);
 
-        logger.debug("We try to save the file as " + imageFile);
+        logger.info("We try to save the file as " + imageFile + " from user " + green.getUser().getUsername());
         try {
             inStream = image.getInputStream();
 
@@ -96,12 +114,9 @@ public class GreenController {
                 outStream.write(bytes, 0, read);
             }
             outStream.close();
-            logger.debug("Successfully saved the image " + image.getOriginalFilename());
             green.setImage(imageName);
-
-
-
             greenRepository.save(green);
+            logger.info("Successfully saved the image " + imageName);
             return green;
         } catch (IOException e) {
             logger.error(Arrays.toString(e.getStackTrace()));

@@ -1,6 +1,7 @@
 package com.starter_kits_usmb.back_java_spring_boot.green;
 
 
+import com.starter_kits_usmb.back_java_spring_boot.category.Category;
 import com.starter_kits_usmb.back_java_spring_boot.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -32,4 +33,8 @@ public class Green {
     @Column(name = "image")
     @NotBlank
     private String image;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
