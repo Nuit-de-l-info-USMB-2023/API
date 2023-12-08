@@ -29,8 +29,7 @@ alter table categories owner to postgres;
 create table questions
 (
     id bigserial primary key,
-    question varchar(100) not null,
-    answer varchar(100) not null,
+    content varchar(100) not null,
     category_id bigint not null references categories(id)
 );
 
@@ -39,8 +38,19 @@ alter table questions owner to postgres;
 create table answers
 (
     id bigserial primary key,
-    answer varchar(100) not null,
+    content varchar(100) not null,
+    content_answer varchar(300) not null,
+    is_good_answer boolean not null,
     question_id bigint not null references questions(id)
 );
 
 alter table answers owner to postgres;
+
+create table greens
+(
+    id bigserial primary key,
+    description varchar(100) not null,
+    date date not null,
+    photo varchar(100) not null,
+    user_id bigint not null references users(id)
+);

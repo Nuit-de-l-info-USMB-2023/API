@@ -28,4 +28,10 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleInvalidAuthHeaderException(InvalidAuthHeaderException ex) {
         return new ErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleException(Exception ex){
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
 }
