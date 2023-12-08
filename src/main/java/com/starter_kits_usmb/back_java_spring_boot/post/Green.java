@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "greens")
 @Data
 public class Green {
     @Id
