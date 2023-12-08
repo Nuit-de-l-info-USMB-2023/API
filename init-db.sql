@@ -1,4 +1,4 @@
-\c test
+\c api
 
 create table roles
 (
@@ -6,6 +6,8 @@ create table roles
     name varchar(10) not null
 );
 alter table roles owner to postgres;
+
+insert into roles(id, name) values (1, 'USER'), (2, 'ADMIN');
 
 create table users
 (
@@ -15,13 +17,30 @@ create table users
     role_id bigint not null references roles(id)
 );
 alter table users owner to postgres;
-insert into roles(id, name) values (1, 'USER'), (2, 'ADMIN');
 
-create table exemples
+create table categories
 (
     id bigserial primary key,
-    title varchar(100) not null,
-    description varchar(200),
-    published boolean not null
+    name varchar(20) not null unique
 );
-alter table exemples owner to postgres;
+
+alter table categories owner to postgres;
+
+create table questions
+(
+    id bigserial primary key,
+    question varchar(100) not null,
+    answer varchar(100) not null,
+    category_id bigint not null references categories(id)
+);
+
+alter table questions owner to postgres;
+
+create table answers
+(
+    id bigserial primary key,
+    answer varchar(100) not null,
+    question_id bigint not null references questions(id)
+);
+
+alter table answers owner to postgres;

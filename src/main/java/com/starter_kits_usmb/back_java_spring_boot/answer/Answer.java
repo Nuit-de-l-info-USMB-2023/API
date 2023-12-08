@@ -30,7 +30,7 @@ public class Answer {
     @NotNull
     private Boolean isGoodAnswer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="question_id", nullable=false)
     private Question question;
 }
