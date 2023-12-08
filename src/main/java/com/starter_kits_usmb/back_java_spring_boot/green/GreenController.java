@@ -1,7 +1,8 @@
-package com.starter_kits_usmb.back_java_spring_boot.post;
+package com.starter_kits_usmb.back_java_spring_boot.green;
 
 
-import com.starter_kits_usmb.back_java_spring_boot.post.dto.GreenCreateDTO;
+import com.starter_kits_usmb.back_java_spring_boot.green.dto.GreenCreateDTO;
+import io.jsonwebtoken.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,21 @@ public class GreenController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all the posts")
     public List<Green> getAllPosts() {
-        return greenRepository.findAll();
+        logger.debug("Getting the list of greens");
+        List<Green> greens = greenRepository.findAll();
+//        greens.forEach((green -> {
+//            try {
+//                InputStream inStream = new FileInputStream(new File(imagesFolder + "/" + green.getImage()));
+//                byte[] image = inStream.readAllBytes();
+//                green.setImage(Arrays.toString(image));
+//                inStream.close();
+//
+//            } catch (IOException e) {
+//                logger.error("Error while retreive image " + green.getImage());
+//            }
+//        }));
+        logger.debug("Found " + greens.size() + " greens");
+        return greens;
     }
 
     @GetMapping("/{id}")
@@ -62,8 +77,8 @@ public class GreenController {
         try {
             inStream = image.getInputStream();
 
-            if (!imagesFolder.exists()){
-                if (!imagesFolder.mkdir()){
+            if (!imagesFolder.exists()) {
+                if (!imagesFolder.mkdir()) {
                     throw new Exception("Cannot create the folder " + imagesFolder);
                 }
             }
@@ -77,12 +92,16 @@ public class GreenController {
             outStream = new FileOutputStream(imageFile);
             int read = 0;
             byte[] bytes = new byte[1024];
-            while ((read = inStream.read(bytes)) != -1){
+            while ((read = inStream.read(bytes)) != -1) {
                 outStream.write(bytes, 0, read);
             }
             outStream.close();
             logger.debug("Successfully saved the image " + image.getOriginalFilename());
             green.setImage(imageName);
+
+
+
+            greenRepository.save(green);
             return green;
         } catch (IOException e) {
             logger.error(Arrays.toString(e.getStackTrace()));
@@ -91,15 +110,5 @@ public class GreenController {
             throw new RuntimeException(e);
         }
         return null;
-    }
-
-    @PostMapping("/image")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @Operation(summary = "Green an image to the server")
-    public void postImage(@RequestParam("image") MultipartFile file) {
-        if (file.isEmpty()) {
-            System.err.println("File in parameters is empty");
-        }
-        System.out.println("File in parameters is not empty");
     }
 }

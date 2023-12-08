@@ -1,4 +1,4 @@
-package com.starter_kits_usmb.back_java_spring_boot.post.dto;
+package com.starter_kits_usmb.back_java_spring_boot.green.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,9 +1,10 @@
-package com.starter_kits_usmb.back_java_spring_boot.post;
+package com.starter_kits_usmb.back_java_spring_boot.green;
 
 
 import com.starter_kits_usmb.back_java_spring_boot.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Date;
@@ -25,9 +26,10 @@ public class Green {
     private String description;
 
     @Column(name = "date")
-    @NotBlank
+    @NotNull
     private Date date;
 
-    @Column(name = "photo")
+    @Column(name = "image")
+    @NotBlank
     private String image;
 }

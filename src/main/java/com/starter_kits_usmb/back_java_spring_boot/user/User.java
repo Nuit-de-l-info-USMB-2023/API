@@ -1,6 +1,6 @@
 package com.starter_kits_usmb.back_java_spring_boot.user;
 
-import com.starter_kits_usmb.back_java_spring_boot.post.Green;
+import com.starter_kits_usmb.back_java_spring_boot.green.Green;
 import com.starter_kits_usmb.back_java_spring_boot.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
