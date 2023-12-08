@@ -2,9 +2,9 @@ package com.starter_kits_usmb.back_java_spring_boot.question;
 
 import com.starter_kits_usmb.back_java_spring_boot.answer.Answer;
 import com.starter_kits_usmb.back_java_spring_boot.answer.AnswerRepository;
+import com.starter_kits_usmb.back_java_spring_boot.answer.dao.AnswerDAO;
 import com.starter_kits_usmb.back_java_spring_boot.category.Category;
 import com.starter_kits_usmb.back_java_spring_boot.category.CategoryRepository;
-import com.starter_kits_usmb.back_java_spring_boot.question.dao.AnswerDAO;
 import com.starter_kits_usmb.back_java_spring_boot.question.dao.QuestionDAO;
 import com.starter_kits_usmb.back_java_spring_boot.question.dto.QuestionCreateDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +38,7 @@ public class QuestionController {
             Collection<Answer> answers = answerRepository.findAllByQuestionId(question.getId());
             ArrayList<AnswerDAO> answersDAO = new ArrayList<>();
             for (Answer answer:answers) {
-                AnswerDAO answerDAO = AnswerDAO.fromAnswer(answer, question);
+                AnswerDAO answerDAO = AnswerDAO.fromAnswer(answer);
                 answersDAO.add(answerDAO);
             }
             questionDAO.setAnswers(answersDAO);
@@ -60,7 +60,7 @@ public class QuestionController {
         Collection<Answer> answers = answerRepository.findAllByQuestionId(question.get().getId());
         ArrayList<AnswerDAO> answersDAO = new ArrayList<>();
         for (Answer answer:answers) {
-            AnswerDAO answerDAO = AnswerDAO.fromAnswer(answer, question.get());
+            AnswerDAO answerDAO = AnswerDAO.fromAnswer(answer);
             answersDAO.add(answerDAO);
         }
         questionDAO.setAnswers(answersDAO);
@@ -80,7 +80,7 @@ public class QuestionController {
         Collection<Answer> answers = answerRepository.findAllByQuestionId(questionCreated.getId());
         ArrayList<AnswerDAO> answersDAO = new ArrayList<>();
         for (Answer answer:answers) {
-            AnswerDAO answerDAO = AnswerDAO.fromAnswer(answer, questionCreated);
+            AnswerDAO answerDAO = AnswerDAO.fromAnswer(answer);
             answersDAO.add(answerDAO);
         }
         questionDAO.setAnswers(answersDAO);
@@ -97,7 +97,7 @@ public class QuestionController {
             Collection<Answer> answers = answerRepository.findAllByQuestionId(questionUpdated.getId());
             ArrayList<AnswerDAO> answersDAO = new ArrayList<>();
             for (Answer answer:answers) {
-                AnswerDAO answerDAO = AnswerDAO.fromAnswer(answer, questionUpdated);
+                AnswerDAO answerDAO = AnswerDAO.fromAnswer(answer);
                 answersDAO.add(answerDAO);
             }
             questionDAO.setAnswers(answersDAO);
