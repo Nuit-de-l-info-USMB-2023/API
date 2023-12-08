@@ -1,10 +1,12 @@
 package com.starter_kits_usmb.back_java_spring_boot.user;
 
+import com.starter_kits_usmb.back_java_spring_boot.post.Green;
 import com.starter_kits_usmb.back_java_spring_boot.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import java.util.Set;
 
 @Entity
 @Table(name = "users",
@@ -30,4 +32,8 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="role_id", nullable=false)
     private Role role;
+
+    @OneToMany
+    @JoinColumn(name = "greens")
+    private Set<Green> greens;
 }
