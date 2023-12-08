@@ -16,12 +16,3 @@ create table users
 );
 alter table users owner to postgres;
 insert into roles(id, name) values (1, 'USER'), (2, 'ADMIN');
-
-create table exemples
-(
-    id bigserial primary key,
-    title varchar(100) not null,
-    description varchar(200),
-    published boolean not null
-);
-alter table exemples owner to postgres;
