@@ -29,11 +29,7 @@ public class User {
     @Size(min = 3, max = 120)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="role_id", nullable=false)
     private Role role;
-
-    @OneToMany
-    @JoinColumn(name = "greens")
-    private Set<Green> greens;
 }
