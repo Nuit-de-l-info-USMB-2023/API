@@ -45,3 +45,12 @@ create table answers
 );
 
 alter table answers owner to postgres;
+
+create table greens
+(
+    id bigserial primary key,
+    description varchar(100) not null,
+    date date not null,
+    photo varchar(100) not null,
+    user_id bigint not null references users(id)
+);
