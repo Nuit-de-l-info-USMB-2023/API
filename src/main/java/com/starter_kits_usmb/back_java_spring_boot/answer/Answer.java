@@ -21,12 +21,12 @@ public class Answer {
     @Size(max = 100)
     private String content;
 
-    @Column(name = "contentAnswer")
+    @Column(name = "content_answer")
     @NotBlank
     @Size(max = 300)
     private String contentAnswer;
 
-    @Column(name = "isGoodAnswer")
+    @Column(name = "is_good_answer")
     @NotNull
     private Boolean isGoodAnswer;
 

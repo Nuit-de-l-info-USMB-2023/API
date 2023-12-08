@@ -39,8 +39,8 @@ create table answers
 (
     id bigserial primary key,
     content varchar(100) not null,
-    contentAnswer varchar(300) not null,
-    isGoodAnswer boolean not null,
+    content_answer varchar(300) not null,
+    is_good_answer boolean not null,
     question_id bigint not null references questions(id)
 );
 
