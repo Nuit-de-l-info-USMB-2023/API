@@ -1,7 +1,11 @@
 package com.starter_kits_usmb.back_java_spring_boot.post;
 
 
+import com.starter_kits_usmb.back_java_spring_boot.category.Category;
+import com.starter_kits_usmb.back_java_spring_boot.category.CategoryRepository;
 import com.starter_kits_usmb.back_java_spring_boot.post.dto.GreenCreateDTO;
+import com.starter_kits_usmb.back_java_spring_boot.user.User;
+import com.starter_kits_usmb.back_java_spring_boot.user.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +28,9 @@ import java.util.Optional;
 @Tag(name = "Green Management", description = "Endpoints for managing the posts from the users")
 public class GreenController {
     private final GreenRepository greenRepository;
+    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+
 
     Logger logger = LogManager.getLogger();
 
@@ -51,6 +58,11 @@ public class GreenController {
         Green green = new Green();
         green.setDate(Date.from(Instant.now()));
         green.setDescription(postDTO.getDescription());
+        Category category = categoryRepository.findById(postDTO.getCategory()).orElseThrow();
+        green.setCategory(category);
+
+        User user = userRepository.findById(postDTO.getUser()).orElseThrow();
+        green.setUser(user);
 
         InputStream inStream = null;
         OutputStream outStream = null;

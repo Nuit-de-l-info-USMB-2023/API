@@ -12,4 +12,10 @@ public class GreenCreateDTO {
 
     @NotNull
     private MultipartFile image;
+
+    @NotNull
+    private long user;
+
+    @NotNull
+    private long category;
 }

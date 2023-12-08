@@ -1,6 +1,7 @@
 package com.starter_kits_usmb.back_java_spring_boot.post;
 
 
+import com.starter_kits_usmb.back_java_spring_boot.category.Category;
 import com.starter_kits_usmb.back_java_spring_boot.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -28,6 +29,11 @@ public class Green {
     @NotBlank
     private Date date;
 
+
     @Column(name = "photo")
     private String image;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
