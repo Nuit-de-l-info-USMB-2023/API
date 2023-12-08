@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -26,7 +27,7 @@ public class Green {
 
     @Column(name = "date")
     @NotBlank
-    private Date date;
+    private LocalDateTime date;
 
     @Column(name = "photo")
     private String image;

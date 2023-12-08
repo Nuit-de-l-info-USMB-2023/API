@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +50,7 @@ public class GreenController {
     @Operation(summary = "Create a new post")
     public Green createPost(@ModelAttribute GreenCreateDTO postDTO) {
         Green green = new Green();
-        green.setDate(Date.from(Instant.now()));
+        green.setDate(LocalDateTime.now());
         green.setDescription(postDTO.getDescription());
 
         InputStream inStream = null;
